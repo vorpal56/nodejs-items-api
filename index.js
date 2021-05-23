@@ -1,19 +1,19 @@
 const express = require("express")
 const db = require("./persistence/sqlite3")
+const itemsRoute = require("./routes/items.route")
+const usersRoute = require("./routes/users.route")
+
 
 var app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
-app.get("/", async (req, res) => {
-	const items = await db.getItems()
-	res.json(items)
-})
-const itemsRoute = require("./routes/items.route")
+
 app.use("/items", itemsRoute)
+app.use("/user", usersRoute)
 
 db.init().then(() => {
-	app.listen(3500, ()=> {
+	app.listen(3000, ()=> {
 		console.log("Index is running on port 3000")
 	})
 }).catch(err => {
